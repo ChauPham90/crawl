@@ -1,0 +1,25 @@
+{
+  "name": "crawl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --detectOpenHandles --watchAll --env=jsdom ",
+    "start": "nodemon index.js",
+    "preset": "jest-puppeteer"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.10",
+    "express": "^4.17.1",
+    "jest": "^27.0.4",
+    "jest-puppeteer": "^5.0.4",
+    "nodemon": "^2.0.7",
+    "npm": "^7.16.0",
+    "puppeteer": "^10.0.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
+  }
+}
