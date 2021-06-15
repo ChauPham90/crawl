@@ -102,30 +102,44 @@ exports.getHTMLContent = async (url) => {
 // };
 
 exports.getOpeningHour = async (htmlContent) => {
+	let expected = [];
+	const regex = /((?:du |le )?(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche|lun|mar|mer|jeu|ven|sam|dim)|(\d{1,2}h\d{1,2}))/gi;
+	const regexCss = /^(\.|\#)/g;
+	const regexDigital = /[0-9]/g;
+
 	const browser = await puppeteer.launch({ headless: true });
 	const page = await browser.newPage();
 	await page.setContent(htmlContent);
-  try {
-    const htmlPage = await page.evaluate(() => 
-    [...new Set(
-      Array.from(document.querySelectorAll('*'), 
-      (elm) => elm.innerText?.replace(/[\r\n\t]/g, ''))
-    )]
-  );
 
-	let expected = htmlPage.filter((elm) => {
-		const regex = /((?:du |le )?(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche|lun|mar|mer|jeu|ven|sam|dim)|(\d{1,2}h\d{1,2}))/gi;
-		const matchedValue = elm?.match(regex);
+	try {
+		const htmlPage = await page.evaluate(() => [...new Set(Array.from(document.querySelectorAll('*'), (elm) => elm.innerText?.replace(/[\r\n\t]/g, '')))]);
 
-		if (elm?.length < 100 && matchedValue ) {
-			return elm.search(regex) === 0 && elm;
-		}
-	});
+		htmlPage.filter((elm) => {
+			const matchedValue = !elm?.match(regexCss) && elm?.match(regex);
 
-	expected = expected.filter((val) => expected.indexOf(val) && expected.lastIndexOf(val));
-	return expected.join(' ');
-  } catch (error) {
-    return error;
-  }
-	
+			if (elm?.length < 100 && matchedValue) {
+				
+
+				// if (getDate?.search(regex) === 0 && getDate?.match(regexDigital)) expected.push(getDate)
+				if (elm.search(regex) === 0) {
+					expected.push(elm);
+					return;
+				} else {
+					let getDate = elm.split(regex).filter(val => {if(typeof val === "string") return val});
+
+					getDate?.shift();
+					getDate = getDate?.map((val) => val?.trim());
+          console.log('getDate: ', getDate);
+					getDate = getDate?.join(' ');
+
+					if (getDate?.search(regex) === 0 && getDate?.match(regexDigital)) expected.push(getDate);
+				}
+			}
+		});
+		console.log('before filter last : ', expected);
+		if (expected.length > 1) expected = expected.filter((val) => expected.indexOf(val) && expected.lastIndexOf(val));
+		return expected.join(' ');
+	} catch (error) {
+		return error;
+	}
 };
