@@ -23,4 +23,8 @@ async function main(url){
     console.log(openingHour)
 }
 
-main('https://www.chaudronnerie-autret.fr/')
+//main('https://www.chaudronnerie-autret.fr/')
+//main('https://carlierfred.wixsite.com/website')
+main('https://blanchisserie-des-alpes.fr')
+//main('https://www.woodeal.fr/')  ---> dont have permistion
+//main('https://www.assistancetregor.com/') --> invalid
