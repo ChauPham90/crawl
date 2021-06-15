@@ -105,23 +105,27 @@ exports.getOpeningHour = async (htmlContent) => {
 	const browser = await puppeteer.launch({ headless: true });
 	const page = await browser.newPage();
 	await page.setContent(htmlContent);
-
-	const htmlPage = await page.evaluate(() => 
+  try {
+    const htmlPage = await page.evaluate(() => 
     [...new Set(
       Array.from(document.querySelectorAll('*'), 
-      (elm) => elm.innerText.replace(/[\r\n\t]/g, ''))
+      (elm) => elm.innerText?.replace(/[\r\n\t]/g, ''))
     )]
   );
 
 	let expected = htmlPage.filter((elm) => {
 		const regex = /((?:du |le )?(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche|lun|mar|mer|jeu|ven|sam|dim)|(\d{1,2}h\d{1,2}))/gi;
-		const matchedValue = elm.match(regex);
+		const matchedValue = elm?.match(regex);
 
-		if (elm.length < 100 && matchedValue ) {
+		if (elm?.length < 100 && matchedValue ) {
 			return elm.search(regex) === 0 && elm;
 		}
 	});
 
 	expected = expected.filter((val) => expected.indexOf(val) && expected.lastIndexOf(val));
 	return expected.join(' ');
+  } catch (error) {
+    return error;
+  }
+	
 };

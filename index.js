@@ -23,4 +23,7 @@ async function main(url){
     console.log("\n\n result: ", openingHour)
 }
 
-main('https://www.chaudronnerie-autret.fr/')
+// main('https://www.chaudronnerie-autret.fr/')
+main('https://carlierfred.wixsite.com/website')
+
+
