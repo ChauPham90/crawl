@@ -14,13 +14,13 @@ function saveHTML(html){
 }
 
 async function main(url){
-    const html = await getHTML(url)
-    saveHTML(html)
+    // const html = await getHTML(url)
+    // saveHTML(html)
     //const data = await parser.getData(html)
     const htmlContent = await parser.getHTMLContent(url)
    //console.log(htmlContent)
     const openingHour = await parser.getOpeningHour(htmlContent)
-    console.log(openingHour)
+    console.log("\n\n result: ", openingHour)
 }
 
 main('https://www.chaudronnerie-autret.fr/')

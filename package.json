@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --detectOpenHandles --watchAll --env=jsdom ",
-    "start": "nodemon index.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "preset": "jest-puppeteer"
   },
   "keywords": [],
